@@ -62,9 +62,15 @@ class TestRoutes(TestCase):
         на страницу логина.
         """
         login_url = reverse('users:login')
-        for name in ('notes:detail', 'notes:edit', 'notes:delete'):
+        urls = (
+            ('notes:detail', (self.note.slug,)),
+            ('notes:edit', (self.note.slug,)),
+            ('notes:delete', (self.note.slug,)),
+            ('notes:add', None),
+        )
+        for name, args in urls:
             with self.subTest(name=name):
-                url = reverse(name, args=(self.note.slug,))
+                url = reverse(name, args=args)
                 redirect_url = f'{login_url}?next={url}'
                 response = self.client.get(url)
                 self.assertRedirects(response, redirect_url)
