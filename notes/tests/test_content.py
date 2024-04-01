@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.test import  Client, TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 
 from notes.models import Note
@@ -10,11 +10,14 @@ User = get_user_model()
 
 
 class TestNotesListPage(TestCase):
+    """Класс тестов страницы списка заметок."""
+
     NOTES_LIST_URL = reverse('notes:list')
     NOTES_COUNT = 5
 
     @classmethod
     def setUpTestData(cls):
+        """Создание тестовых данных."""
         cls.author = User.objects.create(username='Василёк')
         cls.author_client = Client()
         cls.author_client.force_login(cls.author)
@@ -33,20 +36,14 @@ class TestNotesListPage(TestCase):
         Note.objects.bulk_create(all_notes)
 
     def test_context(self):
-        """
-        Тестирование попадание заметки автора в контекст страницы
-        со списком заметок.
-        """
+        """Заметка передаётся в контекст страницы со списком заметок."""
         response = self.author_client.get(self.NOTES_LIST_URL)
         object_list = response.context['object_list']
         author_note = Note.objects.get(id=self.NOTES_COUNT)
         self.assertIn(author_note, object_list)
 
     def test_author_notes_not_in_list_another_author(self):
-        """
-        Тестирование непопадания заметок одного автора в
-        список заметок другого автора.
-        """
+        """Заметка автора не попадает в список заметок другого автора."""
         Note.objects.create(
             title='Задачка',
             text='Найди решение задачки',
@@ -66,9 +63,11 @@ class TestNotesListPage(TestCase):
 
 
 class TestNoteAddEdit(TestCase):
+    """Класс тестов добавления и редактирования заметок."""
 
     @classmethod
     def setUpTestData(cls):
+        """Создание тестовых данных."""
         cls.author = User.objects.create(username='Розочка')
         cls.author_client = Client()
         cls.author_client.force_login(cls.author)

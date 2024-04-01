@@ -12,11 +12,14 @@ User = get_user_model()
 
 
 class TestNoteCreation(TestCase):
+    """Класс тестов создания заметок."""
+
     NOTE_TITLE = 'Заголовок'
     NOTE_TEXT = 'Текст заметки'
 
     @classmethod
     def setUpTestData(cls):
+        """Создание тестовых данных."""
         cls.url = reverse('notes:add')
         cls.redirect_url = reverse('notes:success')
         cls.user = User.objects.create(username='Фунтик')
@@ -56,7 +59,7 @@ class TestNoteCreation(TestCase):
         self.assertEqual(transliteration_slug, transliteration_title)
 
     def test_slug_unique(self):
-        """"Тестируем уникальность slug для адреса страницы заметки."""
+        """Тестируем уникальность slug для адреса страницы заметки."""
         first_note = Note.objects.create(
             title=self.NOTE_TITLE,
             text=self.NOTE_TEXT,
@@ -81,6 +84,8 @@ class TestNoteCreation(TestCase):
 
 
 class TestNoteEditDelete(TestCase):
+    """Класс тестов редактирования и удаления заметки."""
+
     NOTE_TITLE = 'Заголовок'
     NEW_NOTE_TITLE = 'Обновлённый заголовок'
     NOTE_TEXT = 'Текст заметки'
@@ -90,6 +95,7 @@ class TestNoteEditDelete(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+        """Создание тестовых данных."""
         cls.author = User.objects.create(username='Автор заметки')
         cls.author_client = Client()
         cls.author_client.force_login(cls.author)

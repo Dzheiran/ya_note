@@ -10,9 +10,11 @@ User = get_user_model()
 
 
 class TestRoutes(TestCase):
+    """Класс тестов маршрутизации."""
 
     @classmethod
     def setUpTestData(cls):
+        """Создание тестовых данных."""
         cls.author = User.objects.create(username='Шпунтик')
         cls.reader = User.objects.create(username='Винтик')
         cls.note = Note.objects.create(
@@ -23,10 +25,7 @@ class TestRoutes(TestCase):
         )
 
     def test_pages_availability(self):
-        """
-        Тестирование доступности главной страницы,
-        страниц логина, логаута и регистрации пользователей.
-        """
+        """Доступность страниц: главной логина, логаута и регистрации."""
         urls = (
             ('notes:home', None),
             ('users:login', None),
@@ -40,10 +39,7 @@ class TestRoutes(TestCase):
                 self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_availability_for_note_edit_and_delete(self):
-        """
-        Тестирование возможности просмотра, редактирования и удаления заметки
-        автором и неавтором.
-        """
+        """Просмотр, редактирование и удаление заметки автором и неавтором."""
         users_statuses = (
             (self.author, HTTPStatus.OK),
             (self.reader, HTTPStatus.NOT_FOUND),
@@ -57,10 +53,7 @@ class TestRoutes(TestCase):
                     self.assertEqual(response.status_code, status)
 
     def test_redirect_for_anonymous_client(self):
-        """
-        Тестирование переадресации незалогиненного пользователя
-        на страницу логина.
-        """
+        """Переадресация незалогиненного пользователя на страницу логина."""
         login_url = reverse('users:login')
         urls = (
             ('notes:detail', (self.note.slug,)),
@@ -79,9 +72,9 @@ class TestRoutes(TestCase):
 
     def test_pages_availability_for_login_client(self):
         """
-        Тестирование доступности списка заметок,
-        страниц успешного добавления заметки и страница
-        добавления новой заметки залогиненному пользователю.
+        Доступность страниц:
+        список заметок, добавления заметки и успешного добавления заметки
+        залогиненному пользователю.
         """
         self.client.force_login(self.author)
         for name in (
