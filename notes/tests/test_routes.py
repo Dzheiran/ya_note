@@ -25,7 +25,7 @@ class TestRoutes(TestCase):
         )
 
     def test_pages_availability(self):
-        """Доступность страниц: главной логина, логаута и регистрации."""
+        """Доступность страниц: главной, логина, логаута и регистрации."""
         urls = (
             ('notes:home', None),
             ('users:login', None),
