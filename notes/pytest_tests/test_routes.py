@@ -63,6 +63,7 @@ def test_pages_availability_for_different_users(
     ),
 )
 def test_redirects(client, name, args):
+    """Переадресация незалогиненного пользователя на страницу логина."""
     login_url = reverse('users:login')
     url = reverse(name, args=args)
     expected_url = f'{login_url}?next={url}'
