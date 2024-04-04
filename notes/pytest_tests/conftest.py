@@ -49,3 +49,13 @@ def note(author):
 def slug_for_args(note):
     """Получаем slug заметки."""
     return (note.slug,)
+
+
+@pytest.fixture
+def form_data():
+    """Получаем данные из ормы заметки."""
+    return {
+        'title': 'Новый заголовок',
+        'text': 'Новый текст',
+        'slug': 'new-slug'
+    }
